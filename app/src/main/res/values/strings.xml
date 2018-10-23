@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CitiesInfo</string>
+    <string name="ekbString">Екатеренбург</string>
+    <string name="kazanString">Казань</string>
+    <string name="krasnodarString">Краснодар</string>
+    <string name="londonString">Лондон</string>
+    <string name="mocsowString">Москва</string>
+    <string name="piterString">СанктПетербург</string>
+    <string name="title_activity_two">TwoActivity</string>
+</resources>
