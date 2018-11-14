@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         recView.setLayoutManager(new LinearLayoutManager(this));
         recView.setHasFixedSize(false);
         RecViewAdapter recViewAdapter = new RecViewAdapter(initCitiesData());
-       recView.setAdapter(recViewAdapter);
+        recView.setAdapter(recViewAdapter);
     }
 
     private List<CitiesData> initCitiesData() {

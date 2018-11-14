@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 
-public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.RecViewHolder> {
+public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.ViewHolder> implements ItemTouchHelperAdapter{
     private List<CitiesData> list;
 
     public RecViewAdapter(List<CitiesData > list) {
@@ -22,13 +23,13 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.RecViewH
 
     @NonNull
     @Override
-    public RecViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.user_layout, viewGroup, false);
-        return new RecViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecViewHolder recViewHolder, final int i) {
+    public void onBindViewHolder(@NonNull ViewHolder recViewHolder, final int i) {
         CitiesData  citiesData = list.get(i);
         recViewHolder.userImage.setImageResource(citiesData.getImg());
         recViewHolder.userText.setText(citiesData.getTxt());
@@ -49,11 +50,34 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.RecViewH
         return list.size();
     }
 
-    class RecViewHolder extends RecyclerView.ViewHolder {
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(list, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(list, i, i - 1);
+            }
+        }
+        // уведомляем адаптер, что эл-т передвинут
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        list.remove(position);
+        // Уведомляем адаптер, что эл-т удалили
+        notifyItemRemoved(position);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView userImage;
         private TextView userText;
 
-        public RecViewHolder(final View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             userImage = itemView.findViewById(R.id.userImage);
             userText = itemView.findViewById(R.id.userText);
