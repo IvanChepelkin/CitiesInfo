@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.example.user.citiesinfo.R;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private ItemTouchHelper mItemTouchHelper;
     private RecyclerView recView;
     private List <CitiesData> list;
 
@@ -29,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
         recView.setHasFixedSize(false);
         RecViewAdapter recViewAdapter = new RecViewAdapter(initCitiesData());
         recView.setAdapter(recViewAdapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(recViewAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recView);
     }
 
     private List<CitiesData> initCitiesData() {

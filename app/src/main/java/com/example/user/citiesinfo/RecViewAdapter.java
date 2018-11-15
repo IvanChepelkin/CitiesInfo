@@ -2,6 +2,7 @@ package com.example.user.citiesinfo;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -53,15 +54,8 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.ViewHold
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        if (fromPosition < toPosition) {
-            for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(list, i, i + 1);
-            }
-        } else {
-            for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(list, i, i - 1);
-            }
-        }
+        CitiesData prev = list.remove(fromPosition);
+        list.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
         // уведомляем адаптер, что эл-т передвинут
         notifyItemMoved(fromPosition, toPosition);
     }
@@ -73,7 +67,7 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.ViewHold
         notifyItemRemoved(position);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
         private ImageView userImage;
         private TextView userText;
 
@@ -81,6 +75,16 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewAdapter.ViewHold
             super(itemView);
             userImage = itemView.findViewById(R.id.userImage);
             userText = itemView.findViewById(R.id.userText);
+        }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
         }
     }
 }
